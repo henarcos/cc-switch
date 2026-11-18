@@ -21,6 +21,8 @@ pub mod omo;
 pub mod pi_prompt_files;
 pub(crate) mod pi_state;
 pub mod profile;
+#[cfg(target_os = "macos")]
+pub mod reset_alerts;
 pub mod prompt;
 pub mod provider;
 pub mod proxy;

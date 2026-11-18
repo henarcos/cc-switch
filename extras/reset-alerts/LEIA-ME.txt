@@ -1,0 +1,28 @@
+CC SWITCH – ALERTAS DE RESETS EXTRAS
+macOS 14 ou superior · Apple Silicon e Intel
+
+1. No Mac de destino, use Sair no menu do CC Switch.
+2. Guarde uma cópia do CC Switch original para reversão.
+3. Copie CC Switch.app e CC Switch Reset Alerts.app deste pacote para Aplicativos (/Applications).
+4. Execute Ativar alertas.command, mantendo os dois arquivos .sh ao lado dele.
+5. Permita notificações para CC Switch Reset Alerts quando o macOS solicitar.
+
+É uma compilação local, com assinatura ad hoc, não notarizada pela Apple. Se o macOS bloquear a abertura, revise o aviso e use o procedimento normal em Ajustes do Sistema → Privacidade e Segurança → Abrir Mesmo Assim. Autorize tanto o CC Switch quanto o emissor; depois execute novamente a ativação, se necessário.
+
+O pacote não contém contas, tokens ou preferências pessoais. O monitor utiliza as contas ChatGPT já salvas no CC Switch deste Mac. Se ainda não houver contas, adicione-as pelo próprio CC Switch. O diretório de dados personalizado configurado no aplicativo é respeitado.
+
+O monitor avisa quando identifica um novo reset extra disponível e quando restam até 24 horas ou até 1 hora para expirar, identificando a conta. Consulta todas as contas em ciclos de cinco minutos, com internet e o Mac acordado. Na primeira consulta, os resets existentes estabelecem a referência inicial, sem serem anunciados como recém-recebidos. Já podem gerar lembretes de vencimento.
+
+Um LaunchAgent inicia o CC Switch no login e o reinicia em caso de encerramento com erro. Fechar a janela normalmente mantém o aplicativo na bandeja, conforme suas preferências. Escolher Sair encerra também o monitor até a próxima abertura/login. Para iniciar sem janela, ative Silent startup nas configurações do CC Switch.
+
+Se as notificações estiverem negadas, ative-as em Ajustes do Sistema → Notificações → CC Switch Reset Alerts. Os avisos não aceitos voltam a ser tentados nas próximas consultas; não é necessário reinstalar. Foco e Não Perturbe também afetam a apresentação dos banners.
+
+Diagnóstico: reset-alerts-status.json no diretório de dados do CC Switch (normalmente ~/.cc-switch). Confira checked_at e os resultados por conta; um arquivo antigo não comprova que o monitor continua ativo. notifications_authorized informa se a permissão foi concedida. O histórico de recibos fica em reset-alerts-ledger.json; preserve-o para não repetir avisos.
+
+PARA REMOVER
+Encerre o CC Switch pelo menu Sair. No Terminal, execute:
+launchctl bootout "gui/$(id -u)/local.henrique.ccswitch-reset-alerts"
+Remova ~/Library/LaunchAgents/local.henrique.ccswitch-reset-alerts.plist e desative enabled em reset-alerts.json. Restaure sua cópia original do CC Switch. Não altere o arquivo de contas OAuth. O aplicativo CC Switch Reset Alerts pode ser removido de Aplicativos.
+
+ATUALIZAÇÕES
+Uma atualização oficial do CC Switch pode substituir esta integração. Reaplique uma versão compatível do complemento após atualizar. Os testes automatizados cobrem a política de alertas e os arquivos de configuração. O pacote contém ambas as arquiteturas; a execução nativa do emissor foi verificada em Apple Silicon, sem concessão de permissão nem validação visual de banners. Intel foi compilado, não executado neste Mac.
