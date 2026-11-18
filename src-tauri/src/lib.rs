@@ -1412,6 +1412,13 @@ pub fn run() {
                 }
             }
 
+            // Reset monitoring uses the initialized outbound client and the existing OAuth owner.
+            #[cfg(target_os = "macos")]
+            services::reset_alerts::start(
+                app.state::<AppState>().codex_oauth_manager.clone(),
+                crate::config::get_app_config_dir(),
+            );
+
             // 自动更新：开关打开时后台定时检查并下载新版本（装不装由用户确认）
             crate::app_update::spawn_background_loop(app.handle().clone());
 
